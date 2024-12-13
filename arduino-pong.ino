@@ -28,41 +28,8 @@ struct Size {
 void setup() {
   Serial.begin(9600);
   oled.begin(0, true);
-  
-  oled.clearDisplay();
-  oled.setTextSize(2);
-  oled.setTextColor(SH110X_WHITE);
-  
-  #define SPACING 4
-  #define PADDING 4
 
-  #define TEXT_HEADER "Arduino"
-  #define TEXT_TITLE "PONG"
-
-  Size text_arduino = get_text_size(oled, TEXT_HEADER);
-  Size text_title = get_text_size(oled, TEXT_TITLE);
-
-  Size bg(PADDING * 2 + text_title.width - 2, PADDING * 2 + text_title.height - 2);
-  Size banner(text_arduino.width, text_arduino.height + SPACING + bg.height);
-
-  oled.setCursor(
-    (OLED_WIDTH - banner.width) / 2,
-    (OLED_HEIGHT - banner.height) / 2);
-
-  oled.println(TEXT_HEADER);
-  oled.fillRoundRect(
-      (OLED_WIDTH - bg.width) / 2,
-      oled.getCursorY() + SPACING,
-      bg.width, bg.height, 2,
-      SH110X_WHITE);
-
-  oled.setTextColor(SH110X_BLACK);
-  oled.setCursor(
-    (OLED_WIDTH - bg.width) / 2 + PADDING,
-    oled.getCursorY() + SPACING + PADDING);
-
-  oled.println(TEXT_TITLE);
-  oled.display();
+  show_splash(oled);
 }
 
 void loop() {
