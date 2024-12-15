@@ -38,9 +38,14 @@ void loop() {
   is_up_pressed = !digitalRead(BUTTON_UP);
   is_down_pressed = !digitalRead(BUTTON_DOWN);
 
-  Pong::update(oled, is_up_pressed, is_down_pressed);
-  Pong::render(oled);
-
-  oled.display();
-  // delay(10);
+  if (Splash::is_showing()) {
+    Splash::loop(oled, OLED_WIDTH, OLED_HEIGHT);
+    
+    if (is_up_pressed || is_down_pressed) {
+      Splash::hide();
+      Pong::setup(oled, OLED_WIDTH, OLED_HEIGHT);
+    }
+  }
+  else
+    Pong::loop(oled, is_up_pressed, is_down_pressed);
 }

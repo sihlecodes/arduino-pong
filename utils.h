@@ -1,8 +1,9 @@
-// #ifndef UTILS_H
-// #define UTILS_H
+#ifndef UTILS_H
+#define UTILS_H
 
 #include <Adafruit_SH110X.h>
 #include <Adafruit_GFX.h>
+#include <math.h>
 
 typedef Adafruit_SH1106G OLED;
 
@@ -14,6 +15,9 @@ struct Vector2 {
     : x(x), y(y) {}
   
   void set(double x, double y);
+
+  double magnitude();
+  void from_angle(double angle);
 };
 
 struct Size {
@@ -28,4 +32,4 @@ struct Size {
 
 Size get_text_size(OLED& oled, const String& text);
 
-// #endif
+#endif
