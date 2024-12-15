@@ -1,6 +1,7 @@
 #include <Adafruit_SH110X.h>
 #include <Adafruit_GFX.h>
 #include "pong.h"
+#include "splash.h"
 
 #define BUTTON_UP A1
 #define BUTTON_DOWN A0
@@ -26,14 +27,12 @@ void setup() {
   pinMode(BUTTON_UP, INPUT_PULLUP);
   pinMode(BUTTON_DOWN, INPUT_PULLUP);
 
-  show_splash(oled);
-  delay(2000);
-
-  Pong::start(oled, OLED_WIDTH, OLED_HEIGHT);
+  Splash::setup(oled, OLED_WIDTH, OLED_HEIGHT);
 }
 
 bool is_up_pressed;
 bool is_down_pressed;
+
 
 void loop() {
   is_up_pressed = !digitalRead(BUTTON_UP);
