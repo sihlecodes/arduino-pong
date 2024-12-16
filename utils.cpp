@@ -9,9 +9,18 @@ Size get_text_size(OLED& oled, const String& text) {
   return size;
 }
 
+double clamp(double value, double minimum, double maximum) {
+  return max(min(value, maximum), minimum);
+}
+
 void Vector2::set(double x, double y) {
   this->x = x;
   this->y = y;
+}
+
+void Vector2::set(const Vector2& other) {
+  this->x = other.x;
+  this->y = other.y;
 }
 
 double Vector2::magnitude() {
@@ -19,8 +28,10 @@ double Vector2::magnitude() {
 }
 
 void Vector2::from_angle(double angle) {
-  x = magnitude() * cos(angle);
-  y = magnitude() * sin(angle);
+  double magnitude_ = magnitude();
+  
+  x = magnitude_ * cos(angle);
+  y = magnitude_ * sin(angle);
 }
 
 void Size::set(uint16_t width, uint16_t height) {

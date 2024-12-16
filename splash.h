@@ -15,8 +15,9 @@
 namespace Splash {
   bool is_showing();
   void hide();
-  void setup(OLED& oled, uint16_t width, uint16_t height);
-  void loop(OLED& oled, uint16_t width, uint16_t height);
+  void show(OLED& oled);
+  void setup(OLED& oled);
+  void loop(OLED& oled);
 }
 
 #endif

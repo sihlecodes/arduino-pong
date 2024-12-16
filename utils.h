@@ -3,7 +3,7 @@
 
 #include <Adafruit_SH110X.h>
 #include <Adafruit_GFX.h>
-#include <math.h>
+#include <Arduino.h>
 
 typedef Adafruit_SH1106G OLED;
 
@@ -15,9 +15,9 @@ struct Vector2 {
     : x(x), y(y) {}
   
   void set(double x, double y);
-
-  double magnitude();
+  void set(const Vector2& other);
   void from_angle(double angle);
+  double magnitude();
 };
 
 struct Size {
@@ -31,5 +31,6 @@ struct Size {
 };
 
 Size get_text_size(OLED& oled, const String& text);
+double clamp(double value, double minimum, double maximum);
 
 #endif
