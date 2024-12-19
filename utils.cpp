@@ -9,11 +9,11 @@ Size get_text_size(OLED& oled, const String& text) {
   return size;
 }
 
-double clamp(double value, double minimum, double maximum) {
+float clamp(float value, float minimum, float maximum) {
   return max(min(value, maximum), minimum);
 }
 
-void Vector2::set(double x, double y) {
+void Vector2::set(float x, float y) {
   this->x = x;
   this->y = y;
 }
@@ -23,13 +23,13 @@ void Vector2::set(const Vector2& other) {
   this->y = other.y;
 }
 
-double Vector2::magnitude() {
+float Vector2::magnitude() {
   return sqrt(x * x + y * y);
 }
 
-void Vector2::from_angle(double angle) {
-  double magnitude_ = magnitude();
-  
+void Vector2::from_angle(float angle) {
+  float magnitude_ = magnitude();
+
   x = magnitude_ * cos(angle);
   y = magnitude_ * sin(angle);
 }
