@@ -31,6 +31,8 @@ struct Size {
 };
 
 Size get_text_size(OLED& oled, const String& text);
+
+float map(float value, float in_min, float in_max, float out_min, float out_max);
 float clamp(float value, float minimum, float maximum);
 
 #endif

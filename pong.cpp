@@ -30,6 +30,19 @@ unsigned long current, last;
 String game_over_message;
 bool is_game_over;
 
+void Pong::setup(const OLED& oled) {
+  is_game_over = false;
+
+  uint16_t width = oled.width();
+  uint16_t height = oled.height();
+  uint16_t paddle_center_y = (height - PADDLE_HEIGHT) / 2;
+
+  ball.set(width / 2, height / 2);
+  player_paddle.set(PADDLE_MARGIN, paddle_center_y);
+  ai_paddle.set(width - PADDLE_MARGIN, paddle_center_y);
+
+  last = millis();
+}
 
 bool collides(const Vector2& ball, const Vector2& paddle) {
   Vector2 edge(ball);
@@ -50,36 +63,11 @@ bool collides(const Vector2& ball, const Vector2& paddle) {
   return difference.magnitude() <= BALL_RADIUS;
 }
 
-double get_collision_angle(double ball_y, double paddle_y) {
-  return ((ball_y - paddle_y) / PADDLE_HEIGHT - 0.5) * PI * COLLISION_ANGLE_FACTOR;
-}
-
-double map(double value, double in_min, double in_max, double out_min, double out_max) {
-  double percentage = (value - in_min) / (in_max - in_min);
-  return out_min + (out_max - out_min) * percentage;
-}
-
 void set_game_over(const String& message) {
   is_game_over = true;
   game_over_message = message;
 
   Serial.println(message);
-}
-
-void Pong::setup(const OLED& oled) {
-  is_game_over = false;
-
-  uint16_t width = oled.width();
-  uint16_t height = oled.height();
-  uint16_t paddle_center_y = (height - PADDLE_HEIGHT) / 2;
-
-  ball.set(width / 2, height / 2); 
-  game_area.set(width, height);
-
-  player_paddle.set(PADDLE_MARGIN, paddle_center_y);
-  ai_paddle.set(width - PADDLE_MARGIN, paddle_center_y);
-
-  last = millis();
 }
 
 void update(OLED &oled, bool is_up_pressed, bool is_down_pressed) {
