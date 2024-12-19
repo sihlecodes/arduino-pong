@@ -1,6 +1,8 @@
 #include "splash.h"
 
 bool is_splash_showing;
+inline unsigned long delta, last;
+Size text_prompt;
 
 bool Splash::is_showing() {
   return is_splash_showing;
@@ -9,9 +11,6 @@ bool Splash::is_showing() {
 void Splash::hide() {
   is_splash_showing = false;
 }
-
-inline unsigned long delta, last;
-Size text_prompt;
 
 void Splash::setup(OLED& oled) {
   uint16_t width = oled.width();
