@@ -130,6 +130,25 @@ void physics_update(OLED& oled, float delta, bool is_up_pressed, bool is_down_pr
   ball_speed += BALL_ACCELERATION * delta;
 }
 
+int count = 3;
+bool has_served = false;
+
+void show_count_down(OLED& oled) {
+  oled.setTextSize(2);
+  Size text_count = get_text_size(oled, String(count));
+
+  oled.setCursor(
+    (oled.width() - text_count.width) / 2,
+    (oled.height() - text_count.height) /2);
+  
+  oled.clearDisplay();
+  oled.print(count);
+  oled.display();
+
+  delay(500);
+  has_served = (--count) == 0;
+}
+
 void Pong::loop(OLED& oled, bool is_up_pressed, bool is_down_pressed) {
   if (is_game_over) {
     show_game_over(oled, game_over_message);
@@ -139,6 +158,11 @@ void Pong::loop(OLED& oled, bool is_up_pressed, bool is_down_pressed) {
   current = millis();
   float frame_time = (current - last) / 1000.0;
   last = current;
+
+  if (!has_served) {
+    show_count_down(oled);
+    return;
+  }
 
   update(oled, is_up_pressed, is_down_pressed);
 
