@@ -25,12 +25,10 @@ Vector2 player_paddle_velocity;
 Vector2 ai_paddle;
 Vector2 ai_paddle_velocity;
 
-unsigned long current, last;
-
-String game_over_message;
 bool is_game_over;
+unsigned long last;
 
-void Pong::setup(const OLED& oled) {
+void Pong::setup(OLED& oled) {
   is_game_over = false;
 
   uint16_t width = oled.width();
@@ -41,6 +39,9 @@ void Pong::setup(const OLED& oled) {
   player_paddle.set(PADDLE_MARGIN, paddle_center_y);
   ai_paddle.set(width - PADDLE_MARGIN, paddle_center_y);
 
+  // Render a single frame so that the paddles show while
+  // the count down is ticking
+  Pong::render(oled);
   last = millis();
 }
 
@@ -63,13 +64,6 @@ bool collides(const Vector2& ball, const Vector2& paddle) {
   return difference.magnitude() <= BALL_RADIUS;
 }
 
-void set_game_over(const String& message) {
-  is_game_over = true;
-  game_over_message = message;
-
-  Serial.println(message);
-}
-
 float get_collision_angle(float y, float lbound, float min_angle, float max_angle) {
   float variation = random() * 1.0 / RANDOM_MAX - 0.5;
   float ubound = lbound + PADDLE_HEIGHT;
@@ -78,6 +72,43 @@ float get_collision_angle(float y, float lbound, float min_angle, float max_angl
   float angle = map(target, lbound, ubound, min_angle, max_angle);
 
   return angle;
+}
+
+String game_over_message;
+
+void set_game_over(const String& message) {
+  is_game_over = true;
+  game_over_message = message;
+
+  Serial.println(message);
+}
+
+int count = 3;
+int last_tick = count + 1;
+bool has_served = false;
+
+void count_down(OLED& oled, unsigned long elapsed) {
+  int tick = ceil(count - (elapsed / 600.0));
+  has_served = tick == 0;
+
+  if (tick == last_tick || has_served) {
+    last_tick = tick;
+    return;
+  }
+
+  oled.setTextSize(2);
+  Size text_count = get_text_size(oled, String(tick));
+
+  oled.setCursor(
+    (oled.width() - text_count.width) / 2,
+    (oled.height() - text_count.height) /2);
+
+  oled.fillRect(
+    oled.getCursorX(), oled.getCursorY(),
+    text_count.width, text_count.height, SH110X_BLACK);
+
+  oled.print(tick);
+  oled.display();
 }
 
 void update(OLED &oled, bool is_up_pressed, bool is_down_pressed) {
@@ -131,6 +162,8 @@ void physics_update(OLED& oled, float delta, bool is_up_pressed, bool is_down_pr
   ball_speed += BALL_ACCELERATION * delta;
 }
 
+unsigned long current, elapsed;
+
 void Pong::loop(OLED& oled, bool is_up_pressed, bool is_down_pressed) {
   if (is_game_over) {
     show_game_over(oled, game_over_message);
@@ -138,8 +171,16 @@ void Pong::loop(OLED& oled, bool is_up_pressed, bool is_down_pressed) {
   }
 
   current = millis();
-  float frame_time = (current - last) / 1000.0;
+  unsigned long difference = current - last;
+
+  float frame_time = difference / 1000.0;
   last = current;
+  elapsed += difference;
+
+  if (!has_served) {
+    count_down(oled, elapsed);
+    return;
+  }
 
   update(oled, is_up_pressed, is_down_pressed);
 
