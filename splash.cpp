@@ -55,7 +55,7 @@ void Splash::setup(OLED& oled) {
 
   oled.setTextSize(1);
   oled.setTextColor(SH110X_WHITE);
-  
+
   last = millis();
 }
 

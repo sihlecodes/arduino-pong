@@ -40,7 +40,7 @@ void loop() {
 
   if (Splash::is_showing()) {
     Splash::loop(oled);
-    
+
     if (is_up_pressed || is_down_pressed) {
       Splash::hide();
       Pong::setup(oled);
