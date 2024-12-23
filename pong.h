@@ -2,6 +2,7 @@
 #define PONG_H
 
 #include "utils.h"
+#include "game_over.h"
 
 namespace Pong {
   void setup(const OLED& oled);

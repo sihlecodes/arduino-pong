@@ -29,6 +29,9 @@ Size game_area;
 
 unsigned long current, last;
 
+bool is_game_over;
+String game_over_message;
+
 bool collides(const Vector2& ball, const Vector2& paddle) {
   Vector2 edge(ball);
 
@@ -58,7 +61,16 @@ double map(double value, double in_min, double in_max, double out_min, double ou
   return out_min + (out_max - out_min) * percentage;
 }
 
+void set_game_over(const String& message) {
+  is_game_over = true;
+  game_over_message = message;
+
+  Serial.println(message);
+}
+
 void Pong::setup(const OLED& oled) {
+  is_game_over = false;
+
   uint16_t width = oled.width();
   uint16_t height = oled.height();
   uint16_t paddle_center_y = (height - PADDLE_HEIGHT) / 2;
@@ -102,10 +114,10 @@ void physics_update(OLED& oled, double delta, bool is_up_pressed, bool is_down_p
     ball_direction.y = -ball_direction.y;
 
   if (ball.x <= 0)
-    Serial.println("LOSER");
+    set_game_over("LOSER");
 
   else if (ball.x >= game_area.width)
-    Serial.println("WINNER");
+    set_game_over("WINNER");
   
   else if (collides(ball, player_paddle)) {
     double angle = map(ball.y,
@@ -125,13 +137,18 @@ void physics_update(OLED& oled, double delta, bool is_up_pressed, bool is_down_p
 }
 
 void Pong::loop(OLED& oled, bool is_up_pressed, bool is_down_pressed) {
+  if (is_game_over) {
+    show_game_over(oled, game_over_message);
+    return;
+  }
+
   current = millis();
   double frame_time = (current - last) / 1000.0;
   last = current;
 
   update(oled, is_up_pressed, is_down_pressed);
   
-  while (frame_time > 0) {
+  while (frame_time > 0 && !is_game_over) {
     double delta = min(frame_time, MAX_DELTA);
     physics_update(oled, delta, is_up_pressed, is_down_pressed);
     frame_time -= delta;
