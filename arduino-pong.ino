@@ -24,6 +24,13 @@ void setup() {
   Serial.begin(9600);
   oled.begin(0, true);
 
+  // Reading an analog value from a digital pin yields a
+  // somewhat random value, good enough for a seed
+  randomSeed(analogRead(0));
+  // Oddly enough the first random number I get is 0
+  // After consuming this 0, I get proper random values
+  random();
+
   pinMode(BUTTON_UP, INPUT_PULLUP);
   pinMode(BUTTON_DOWN, INPUT_PULLUP);
 

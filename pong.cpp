@@ -70,6 +70,16 @@ void set_game_over(const String& message) {
   Serial.println(message);
 }
 
+float get_collision_angle(float y, float lbound, float min_angle, float max_angle) {
+  float variation = random() * 1.0 / RANDOM_MAX - 0.5;
+  float ubound = lbound + PADDLE_HEIGHT;
+
+  float target = clamp(y + variation, lbound, ubound);
+  float angle = map(target, lbound, ubound, min_angle, max_angle);
+
+  return angle;
+}
+
 void update(OLED &oled, bool is_up_pressed, bool is_down_pressed) {
   player_paddle_velocity.y = 0;
 
@@ -109,16 +119,12 @@ void physics_update(OLED& oled, float delta, bool is_up_pressed, bool is_down_pr
     set_game_over("WINNER");
 
   else if (collides(ball, player_paddle)) {
-    double angle = map(ball.y,
-      player_paddle.y, player_paddle.y + PADDLE_HEIGHT, -PI/3, PI/3);
-      
+    float angle = get_collision_angle(ball.y, player_paddle.y, -PI/3, PI/3);
     ball_direction.from_angle(angle);
   }
 
   else if (collides(ball, ai_paddle)) {
-    float angle = map(ball.y,
-     ai_paddle.y, ai_paddle.y + PADDLE_HEIGHT, PI * 4/3, PI * 2/3);
-
+    float angle = get_collision_angle(ball.y, ai_paddle.y, PI * 4/3, PI * 2/3);
     ball_direction.from_angle(angle);
   }
 
