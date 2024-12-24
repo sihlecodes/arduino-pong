@@ -1,6 +1,14 @@
 # arduino-pong
 
 A simple pong game for Arduino compatible boards.
+Like most of projects this was created as a learning exercise.
+Firstly, for learning how to use displays with Arduinos and
+secondly to get used to making larger projects with C++.
+Anyways, here's a small clip of the project.
+
+![Game Over GIF](./images/arduino-pong-game-over.gif)
+
+Let's pretend you can't see my finger shaking. Oh, what's that? You can't unsee it now? Damn! :joy:
 
 # Parts
 
@@ -27,4 +35,10 @@ Open the `arduino-pong.ino` file in the Arduino IDE. The project depends on the 
 
 # Challenges
 
+The biggest challenge was trying to improve the frame rate of the project.
+I tried multiple different methods of trying to decrease/optimize draw operations.
+At first I was clearing objects as they move (this is cheaper than clearing the entire screen on each frame),
+but this resulted in very inconsistent results.
+The game would run at different frame rates depending on the balls position relative to the paddles.
+I ended up opting for clearing the entire screen on each frame, because it has a more steady frame rate.
 TODO
