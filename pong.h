@@ -3,6 +3,7 @@
 
 #include "utils.h"
 #include "game_over.h"
+#include "timer.h"
 
 namespace Pong {
   void setup(OLED& oled);

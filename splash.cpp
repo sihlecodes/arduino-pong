@@ -1,16 +1,8 @@
 #include "splash.h"
 
+inline unsigned long elapsed, start;
 bool is_splash_showing;
-inline unsigned long delta, last;
 Size text_prompt;
-
-bool Splash::is_showing() {
-  return is_splash_showing;
-}
-
-void Splash::hide() {
-  is_splash_showing = false;
-}
 
 void Splash::setup(OLED& oled) {
   uint16_t width = oled.width();
@@ -55,7 +47,7 @@ void Splash::setup(OLED& oled) {
   oled.setTextSize(1);
   oled.setTextColor(SH110X_WHITE);
 
-  last = millis();
+  start = millis();
 }
 
 void Splash::show(OLED& oled) {
@@ -64,15 +56,14 @@ void Splash::show(OLED& oled) {
 }
 
 bool previous_blink_state;
-bool blink_state;
 
 void Splash::loop(OLED &oled) {
-  delta = millis() - last; 
+  elapsed = millis() - start;
 
   uint16_t x = (oled.width() - text_prompt.width) / 2;
   uint16_t y = oled.getCursorY() + PADDING + SPACING;
 
-  blink_state = (delta / PROMPT_BLINK_INTERVAL) % 2;
+  bool blink_state = (elapsed / PROMPT_BLINK_INTERVAL) % 2;
 
   if (blink_state == previous_blink_state)
     return;

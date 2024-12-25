@@ -8,6 +8,10 @@
 
 #define TEXT_GAME_OVER "Game Over"
 
-void show_game_over(OLED& oled, const String& message);
+namespace GameOver {
+  bool is_declared();
+  void declare(const String& message);
+  void show(OLED& oled);
+}
 
 #endif

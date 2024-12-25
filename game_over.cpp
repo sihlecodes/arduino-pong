@@ -1,6 +1,20 @@
 #include "game_over.h"
 
-void show_game_over(OLED& oled, const String& message) {
+String game_over_message;
+bool is_game_over = false;
+
+bool GameOver::is_declared() {
+  return is_game_over;
+}
+
+void GameOver::declare(const String &message) {
+  is_game_over = true;
+  game_over_message = message;
+
+  Serial.println(message);
+}
+
+void GameOver::show(OLED& oled) {
   uint16_t width = oled.width();
   uint16_t height = oled.height();
 
@@ -10,7 +24,7 @@ void show_game_over(OLED& oled, const String& message) {
   Size text_game_over = get_text_size(oled, TEXT_GAME_OVER);
 
   oled.setTextSize(2);
-  Size text_message = get_text_size(oled, message);
+  Size text_message = get_text_size(oled, game_over_message);
 
   Size bg(PADDING * 2 + text_message.width - 2, PADDING * 2 + text_message.height - 2);
   Size banner(text_game_over.width, text_game_over.height + SPACING + bg.height);;
@@ -35,6 +49,6 @@ void show_game_over(OLED& oled, const String& message) {
     oled.getCursorY() + SPACING + PADDING);
 
   oled.setTextSize(2);
-  oled.println(message);
+  oled.println(game_over_message);
   oled.display();
 }
