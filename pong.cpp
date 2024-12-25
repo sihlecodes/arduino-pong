@@ -11,9 +11,12 @@
 
 #define AI_CHASE_RANGE 9
 #define AI_VELOCITY_FACTOR 0.9
-
 #define COLLISION_ANGLE_FACTOR 0.6
-#define MAX_DELTA 1.0 / 60
+
+#define MIN_SERVE_ANGLE 150
+#define MAX_SERVE_ANGLE 210
+
+#define MAX_ALLOWED_PHYSICS_FRAME_DELTA 1.0 / 60
 
 Vector2 ball;
 float   ball_speed = BALL_SPEED;
@@ -34,10 +37,13 @@ void Pong::setup(OLED& oled) {
   uint16_t width = oled.width();
   uint16_t height = oled.height();
   uint16_t paddle_center_y = (height - PADDLE_HEIGHT) / 2;
+  uint16_t ai_paddle_x = width - PADDLE_MARGIN;
 
-  ball.set(width / 2, height / 2);
+  ball.set(ai_paddle_x - BALL_RADIUS * 2, height / 2);
+  ball_direction.from_angle(random(MIN_SERVE_ANGLE, MAX_SERVE_ANGLE) * DEG_TO_RAD);
+
   player_paddle.set(PADDLE_MARGIN, paddle_center_y);
-  ai_paddle.set(width - PADDLE_MARGIN, paddle_center_y);
+  ai_paddle.set(ai_paddle_x, paddle_center_y);
 
   // Render a single frame so that the paddles show while
   // the count down is ticking
@@ -185,7 +191,7 @@ void Pong::loop(OLED& oled, bool is_up_pressed, bool is_down_pressed) {
   update(oled, is_up_pressed, is_down_pressed);
 
   while (frame_time > 0 && !is_game_over) {
-    float delta = min(frame_time, MAX_DELTA);
+    float delta = min(frame_time, MAX_ALLOWED_PHYSICS_FRAME_DELTA);
     physics_update(oled, delta, is_up_pressed, is_down_pressed);
     frame_time -= delta;
   }
