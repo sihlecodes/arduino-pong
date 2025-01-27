@@ -1,7 +1,7 @@
 # Arduino pong
 
 A simple pong game for Arduino compatible boards.
-Like most of projects this was created as a learning exercise.
+Like most of my projects, this was created as a learning exercise.
 Firstly, for learning how to use displays with Arduinos and
 secondly to get used to making larger projects with C++.
 Anyways, here's a small clip of the project.
