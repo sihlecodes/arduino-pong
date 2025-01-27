@@ -45,4 +45,4 @@ I ended up opting for clearing the entire screen on each frame, because it has a
 Another challenge was from me not knowing the landscape very well.
 What I mean is that, I was coding for a platform with very limited resources. So, I have not doubt there are tons of optimizations that can be made to the code.
 
-Also, I was trying to stay away from classes but I just ended up using namespaces in a way that mimics having classes. I don't think that's how namespaces should be used. Oh well, this was at least not the worst attempt at coding for micro-controllers. (I think I could have done worse :D)
+Also, I was trying to stay away from classes but I just ended up using namespaces in a way that mimics having classes. I don't think that's how namespaces should be used. Oh well, this was at least not the worst attempt at coding for micro-controllers. (I think I could have done worse :D)
