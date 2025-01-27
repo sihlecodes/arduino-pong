@@ -1,4 +1,4 @@
-# arduino-pong
+# Arduino pong
 
 A simple pong game for Arduino compatible boards.
 Like most of projects this was created as a learning exercise.
@@ -10,7 +10,7 @@ Anyways, here's a small clip of the project.
 
 Let's pretend you can't see my finger shaking. Oh, what's that? You can't unsee it now? Damn! :joy:
 
-# Parts
+## Parts
 
 * Push Button x2
 * 128x64 OLED Display (SSH1106, Spi interface)
@@ -19,7 +19,7 @@ Let's pretend you can't see my finger shaking. Oh, what's that? You can't unsee 
 
 If you have a different type of display, it shouldn't be too difficult to tweak the code around to accomodate it. Everything you'll need to change is within the `arduino-pong.ino` file.
 
-# Schematics
+## Schematics
 
 I have my arduino the wrong way around because I don't have the proper cable for programming it. Instead, I used a ttl to uart cable to program it. Having the board in this configuaration made it a tad bit more convenient. Anyways, if you have the proper cable you can completely ignore the ttl cable parts of the schematics :D.
 
@@ -29,11 +29,11 @@ Here's schematic diagram in case that's your cup of soup. No judgements here, I 
 
 ![Schematic Diagram](./images/arduino-pong-schematic.png)
 
-# Installation
+## Installation
 
 Open the `arduino-pong.ino` file in the Arduino IDE. The project depends on the `Adafruit_GFX` and `Adafruit_SH110X` libraries so make sure you have those installed. The only step left over is to hit upload :D.
 
-# Challenges
+## Challenges
 
 The biggest challenge was trying to improve the frame rate of the project.
 I tried multiple different methods of trying to decrease/optimize draw operations.
